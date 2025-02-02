@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application Vulnerability Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function clearResults() {
+            // Clear the result content by setting innerHTML to empty
+            document.getElementById('scan-results').innerHTML = '';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-family:'Times New Roman';">Web Application Vulnerability Scanner</h1>
+        <form method="POST" action="/">
+            <label for="url" style="color : white; font-family:'Times New Roman';">Enter URL to Scan : [NOTE : use HTTPS://]</label>
+            <input type="text" name="url" id="url" required>
+            <button type="submit">Scan</button>
+        </form>
+
+        {% if url %}
+            <div id="scan-results">
+                <h2 style="color: white;font-family:'Times New Roman';">Results for {{ url }}</h2>
+                {% if sql_injection_result %}
+                    <p class="warning">{{ sql_injection_result }}</p>
+                {% else %}
+                    <p style="color: white;font-family:'Times New Roman';">No SQL Injection vulnerability detected.</p>
+                {% endif %}
+                
+                {% if xss_result %}
+                    <p class="warning">{{ xss_result }}</p>
+                {% else %}
+                    <p style="color: white;font-family:'Times New Roman';">No XSS vulnerability detected.</p>
+                {% endif %}
+            </div>
+            <div>
+            <button style="background-color: red;"    type="button" onclick="clearResults() ">Clear Results</button>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
